@@ -1,26 +1,25 @@
 package helloWorld.contexts
 {
-	import helloWorld.ui.views.HelloWorldView;
 	import flash.display.DisplayObject;
 	
-	import core.appEx.core.contexts.ISelectionContext;
+	import core.appEx.core.contexts.IInspectableContext;
 	import core.appEx.core.contexts.IVisualContext;
-	import core.appEx.events.ContextSelectionValidatorEvent;
-	import core.appEx.validators.ContextSelectionValidator;
-	import core.editor.CoreEditor;
+	import core.data.ArrayCollection;
 	
-	public class HelloWorldContext implements IVisualContext
+	import helloWorld.entities.ExampleObject;
+	import helloWorld.ui.views.HelloWorldView;
+	
+	public class HelloWorldContext implements IVisualContext, IInspectableContext
 	{
 		private var _view       :HelloWorldView;
-		private var contextSelectionValidator   :ContextSelectionValidator;
+		private var _selection  :ArrayCollection;
 		
 		public function HelloWorldContext()
 		{
 			_view = new HelloWorldView();
-			_view.text = "Hello World";
 			
-			contextSelectionValidator = new ContextSelectionValidator(CoreEditor.contextManager, ISelectionContext, String);
-			contextSelectionValidator.addEventListener(ContextSelectionValidatorEvent.VALID_SELECTION_CHANGED, selectionChangeHandler);
+			_selection = new ArrayCollection();
+			_selection.addItem( new ExampleObject() );
 		}
 		
 		public function get view():DisplayObject
@@ -30,20 +29,9 @@ package helloWorld.contexts
 		
 		public function dispose():void
 		{
-			contextSelectionValidator.removeEventListener(ContextSelectionValidatorEvent.VALID_SELECTION_CHANGED, selectionChangeHandler);
-			contextSelectionValidator.dispose();
+			
 		}
 		
-		private function selectionChangeHandler(event:ContextSelectionValidatorEvent):void
-		{
-			_view.text = "";
-			
-			var selection:Array = contextSelectionValidator.getValidSelection();
-			for ( var i:int = 0; i < selection.length; i++ )
-			{
-				var item:String = selection[i];
-				_view.text += item + "\n";
-			}
-		}       
+		public function get selection():ArrayCollection { return _selection; }
 	}
 }
