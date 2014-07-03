@@ -8,6 +8,7 @@ package helloWorld.contexts
 	import core.app.entities.URI;
 	import core.app.operations.ReadFileAndDeserializeOperation;
 	import core.appEx.core.contexts.IOperationManagerContext;
+	import core.appEx.core.contexts.ISelectionContext;
 	import core.appEx.events.OperationManagerEvent;
 	import core.appEx.managers.OperationManager;
 	import core.appEx.operations.SerializeAndWriteFileOperation;
@@ -19,11 +20,12 @@ package helloWorld.contexts
 	
 	[Event( type="flash.events.Event", name="change" )]
 	
-	public class StringListContext extends EventDispatcher implements IEditorContext, IOperationManagerContext
+	public class StringListContext extends EventDispatcher implements IEditorContext, IOperationManagerContext, ISelectionContext
 	{
 		private var _view       :StringListView;
 		
 		private var _dataProvider   :ArrayCollection;
+		private var _selection      :ArrayCollection;
 		
 		private var _operationManager   :OperationManager;
 		
@@ -40,6 +42,9 @@ package helloWorld.contexts
 			
 			_operationManager = new OperationManager();
 			_operationManager.addEventListener(OperationManagerEvent.CHANGE, changeOperationManagerHandler);
+			
+			_selection = new ArrayCollection();
+			_view.addEventListener(Event.CHANGE, listChangeHandler);
 		}
 		
 		public function get view():DisplayObject
@@ -51,6 +56,13 @@ package helloWorld.contexts
 		{
 			_operationManager.removeEventListener(OperationManagerEvent.CHANGE, changeOperationManagerHandler);
 			_operationManager.dispose();
+			
+			_view.removeEventListener(Event.CHANGE, listChangeHandler);
+		}
+		
+		private function listChangeHandler( event:Event ):void
+		{
+			_selection.source = _view.selectedItems;
 		}
 		
 		public function enable():void
@@ -130,5 +142,7 @@ package helloWorld.contexts
 		public function get dataProvider():ArrayCollection { return _dataProvider; }
 		
 		public function get operationManager():OperationManager { return _operationManager; }
+		
+		public function get selection():ArrayCollection { return _selection; }
 	}
 }
