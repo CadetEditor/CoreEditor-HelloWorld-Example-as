@@ -13,6 +13,7 @@ package
 	
 	import helloWorld.commandHandlers.MyCommandHandler;
 	import helloWorld.contexts.HelloWorldContext;
+	import helloWorld.contexts.StringListContext;
 	import helloWorld.entities.Commands;
 	
 	public class HelloWorldExtension extends Sprite
@@ -20,6 +21,8 @@ package
 		public function HelloWorldExtension()
 		{
 			CoreApp.resourceManager.addResource( new FactoryResource( HelloWorldContext, "Hello World" ) );
+			CoreApp.resourceManager.addResource( new FactoryResource( StringListContext, "String List" ) );
+			
 			CoreApp.resourceManager.addResource( new ActionFactory( IGlobalViewContainer, Commands.MY_COMMAND, "My Action", "myActions", "Actions/myActions", CoreEditorIcons.Resource ) );
 			CoreApp.resourceManager.addResource( new CommandHandlerFactory( Commands.MY_COMMAND, MyCommandHandler ) );
 			CoreApp.resourceManager.addResource( new KeyBinding( Commands.MY_COMMAND, 77, KeyModifier.CTRL ) );
