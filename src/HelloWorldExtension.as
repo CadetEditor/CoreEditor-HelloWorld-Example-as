@@ -4,7 +4,9 @@ package
 	
 	import core.app.CoreApp;
 	import core.app.resources.FactoryResource;
+	import core.appEx.entities.KeyModifier;
 	import core.appEx.resources.CommandHandlerFactory;
+	import core.appEx.resources.KeyBinding;
 	import core.editor.core.IGlobalViewContainer;
 	import core.editor.icons.CoreEditorIcons;
 	import core.editor.resources.ActionFactory;
@@ -20,6 +22,7 @@ package
 			CoreApp.resourceManager.addResource( new FactoryResource( HelloWorldContext, "Hello World" ) );
 			CoreApp.resourceManager.addResource( new ActionFactory( IGlobalViewContainer, Commands.MY_COMMAND, "My Action", "myActions", "Actions/myActions", CoreEditorIcons.Resource ) );
 			CoreApp.resourceManager.addResource( new CommandHandlerFactory( Commands.MY_COMMAND, MyCommandHandler ) );
+			CoreApp.resourceManager.addResource( new KeyBinding( Commands.MY_COMMAND, 77, KeyModifier.CTRL ) );
 		}
 	}
 }
