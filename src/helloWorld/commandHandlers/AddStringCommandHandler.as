@@ -1,5 +1,6 @@
 package helloWorld.commandHandlers
 {
+	import core.app.operations.AddItemOperation;
 	import core.appEx.core.commandHandlers.ICommandHandler;
 	import core.editor.CoreEditor;
 	
@@ -15,8 +16,9 @@ package helloWorld.commandHandlers
 		{
 			var context:StringListContext = CoreEditor.contextManager.getLatestContextOfType(StringListContext);
 			
-			var length:int = context.dataProvider.length;
-			context.dataProvider.addItem("Item " + (length+1));
+			var item:String = "Item " + (context.dataProvider.length+1);
+			var addItemOperation:AddItemOperation = new AddItemOperation( item, context.dataProvider );
+			context.operationManager.addOperation(addItemOperation);
 		}
 	}
 }
